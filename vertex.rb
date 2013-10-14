@@ -1,8 +1,8 @@
 class Vertex
-  attr_accessor :label
-  attr_accessor :edges
+  attr_reader :label
+  attr_reader :edges
 
-  def initialize label
+  def initialize(label)
     @label = label
     @edges = []
   end
@@ -31,4 +31,5 @@ class Vertex
     @stack.pop() #Backtracking so popping the vertex from the stack
   end
 
+  private :dfs_recursive
 end

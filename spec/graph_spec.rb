@@ -48,7 +48,6 @@ describe Graph do
         }
       }
     end
-
   end
 
   describe '#matrix' do
