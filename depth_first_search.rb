@@ -35,19 +35,19 @@ def depth_first_search(vertex, goal_vertex)
   @stack.pop() #Backtracking so popping the vertex from the stack
 end
 
-@queue = []
+@stack = []
 
 # depth first search as in Winston book (with queue) - a path, not shortest path
 def depth_first_search_winston(vertex, goal_vertex)
-  @queue.push([vertex])
+  @stack.push([vertex])
   @explored = {}
   @explored[vertex.label] = true
-  while(!@queue.nil?)
-    vertices = @queue.pop
+  while(!@stack.nil?)
+    vertices = @stack.pop
     vertices.last.edges.reverse_each { |edge|
       unless @explored.has_key? edge.label
         @explored[vertex.label] = true
-        @queue.push(vertices.dup.push(edge))
+        @stack.push(vertices.dup.push(edge))
         return 1 if edge == goal_vertex
       end
     }
@@ -76,5 +76,5 @@ puts 'No Path found' if @stack.nil?
 
 print "\nDepth first search winston style: "
 depth_first_search_winston(graph.vertices.values[0], graph.vertices.values[5]) # Do depth first search from S to E
-puts 'No Path found' if @queue.nil?
-@queue.last.each { |vertex| print vertex.label } unless @queue.nil?
+puts 'No Path found' if @stack.nil?
+@stack.last.each { |vertex| print vertex.label } unless @stack.nil?

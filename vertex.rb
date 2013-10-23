@@ -1,3 +1,5 @@
+require 'thread'
+
 class Vertex
   attr_reader :label
   attr_reader :edges
@@ -11,6 +13,7 @@ class Vertex
     @edges.push(vertex)
   end
 
+  # depth first search
   def depth_first_search(goal_vertex)
     @explored = {}
     @stack = []     # Frontier
@@ -29,6 +32,43 @@ class Vertex
       end
     }
     @stack.pop() #Backtracking so popping the vertex from the stack
+  end
+
+  # depth first search as in Winston book (with array behaving as stack) - a path, not shortest path
+  def depth_first_search_winston(goal_vertex)
+    return [self] if self == goal_vertex
+    @stack = [], @explored = {}
+    @stack << [self]
+    @explored[self.label] = true
+    while @stack
+      path = @stack.pop
+      path.last.edges.reverse_each { |edge|
+        unless @explored.has_key? edge.label
+          @explored[edge.label] = true
+          new_path = path.dup.push(edge)
+          edge == goal_vertex ? (return new_path) : @stack << new_path
+        end
+      }
+    end
+  end
+
+  # breadth first search as in Winston book (with array behaving as queue) - shortest path
+  def breadth_first_search_winston(goal_vertex)
+    return [self] if self == goal_vertex
+    @queue = []
+    @explored = {}
+    @queue << [self]
+    @explored[self.label] = true
+    while @queue
+      path = @queue.pop
+      path.last.edges.reverse_each{ |edge|
+        unless @explored.has_key? edge.label
+          @explored[edge.label] = true
+          new_path = path.dup.push(edge)
+          edge == goal_vertex ? (return new_path) : @queue.unshift(new_path)
+        end
+      }
+    end
   end
 
   private :dfs_recursive

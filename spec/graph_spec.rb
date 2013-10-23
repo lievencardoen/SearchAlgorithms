@@ -75,5 +75,44 @@ describe Graph do
       stack = root_vertex.depth_first_search(goal_vertex)
       stack.map { |vertex| vertex.label }.join().should eq 'SABE'
     end
+
+    it 'should find S' do
+      root_vertex = @graph.vertices['S']
+      goal_vertex = @graph.vertices['S']
+      stack = root_vertex.depth_first_search(goal_vertex)
+      stack.map { |vertex| vertex.label }.join().should eq 'S'
+    end
+  end
+
+  describe 'depth first search winston' do
+    it 'should find SABE' do
+      root_vertex = @graph.vertices['S']
+      goal_vertex = @graph.vertices['E']
+      path = root_vertex.depth_first_search_winston(goal_vertex)
+      path.map { |vertex| vertex.label }.join().should eq 'SABE'
+    end
+
+    it 'should find S' do
+      root_vertex = @graph.vertices['S']
+      goal_vertex = @graph.vertices['S']
+      stack = root_vertex.depth_first_search_winston(goal_vertex)
+      stack.map { |vertex| vertex.label }.join().should eq 'S'
+    end
+  end
+
+  describe 'breadth first search winston' do
+    it 'should find SDE' do
+      root_vertex = @graph.vertices['S']
+      goal_vertex = @graph.vertices['E']
+      path = root_vertex.breadth_first_search_winston(goal_vertex)
+      path.map { |vertex| vertex.label }.join().should eq 'SDE'
+    end
+
+    it 'should find S' do
+      root_vertex = @graph.vertices['S']
+      goal_vertex = @graph.vertices['S']
+      path = root_vertex.breadth_first_search_winston(goal_vertex)
+      path.map { |vertex| vertex.label }.join().should eq 'S'
+    end
   end
 end
