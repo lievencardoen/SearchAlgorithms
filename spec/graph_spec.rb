@@ -115,4 +115,42 @@ describe Graph do
       path.map { |vertex| vertex.label }.join().should eq 'S'
     end
   end
+
+  describe 'non deterministic search' do
+    it 'should always find one of the four paths' do
+      root_vertex = @graph.vertices['S']
+      goal_vertex = @graph.vertices['E']
+
+      found_paths = Hash.new(0) #Initialize all to 0
+
+      # Do a non deterministic search 10000 times and save variance
+      10000.times {
+        path = root_vertex.non_deterministic_search(goal_vertex)
+        path_string = path.map { |vertex| vertex.label }.join()
+        path_string.should match /^SABE$|^SDE$|^SDABE$|SADE$/
+        found_paths[path_string] = found_paths[path_string] + 1
+      }
+      # Changes one of them is below 2000 is very unlikely
+      found_paths['SABE'].should be > 2000
+      found_paths['SDE'].should be > 2000
+      found_paths['SDABE'].should be > 2000
+      found_paths['SADE'].should be > 2000
+    end
+
+    it 'should find S' do
+      root_vertex = @graph.vertices['S']
+      goal_vertex = @graph.vertices['S']
+      path = root_vertex.non_deterministic_search(goal_vertex)
+      path.map { |vertex| vertex.label }.join().should eq 'S'
+    end
+  end
+
+  describe 'iterative deepening search' do
+    it 'should always find SDE' do
+      root_vertex = @graph.vertices['S']
+      goal_vertex = @graph.vertices['E']
+      path = root_vertex.iterative_deepening_search(goal_vertex)
+      path.map { |vertex| vertex.label }.join().should eq 'SDE'
+    end
+  end
 end
